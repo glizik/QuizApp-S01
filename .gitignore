@@ -1,0 +1,32 @@
+# OS X temporary files
+.DS_Store
+*.swp
+
+# Xcode
+DerivedData/
+build/
+*.pbxuser
+!default.pbxuser
+*.xccheckout
+xcuserdata/
+docs/
+debug.txt
+*.storyboardbak
+
+# CocoaPods
+!Podfile.lock
+Pods/
+
+# Gem
+!Gemfile.lock
+
+# CI
+version.properties
+
+#Fastlane
+dist/
+fastlane/report.xml
+#*.cer
+*.mobileprovision
+.scannerwork/
+sonar-branch
