@@ -21,8 +21,8 @@ extension Router {
 }
 
 class Flow {
-    let router: Router
-    let questions: [String]
+    private let router: Router
+    private let questions: [String]
     
     init(questions: [String], router: Router) {
         self.questions = questions
@@ -31,16 +31,21 @@ class Flow {
     
     func start() {
         if let firstQuestion = questions.first {
-            router.routeTo(question: firstQuestion, answerCallback: routeNext(firstQuestion))
+            router.routeTo(question: firstQuestion, answerCallback: routeNext(from: firstQuestion))
         }
     }
     
-    func routeNext(_ question: String) -> Router.AnswerCallback {
+    private func routeNext(from question: String) -> Router.AnswerCallback {
         return { [weak self] _ in
             guard let strongSelf = self else { return }
-            let currentQuestionIndex = strongSelf.questions.firstIndex(of: question)!
-            let nextQuestion = strongSelf.questions[currentQuestionIndex + 1]
-            strongSelf.router.routeTo(question: nextQuestion, answerCallback: strongSelf.routeNext(nextQuestion))
+            
+            if let currentQuestionIndex = strongSelf.questions.firstIndex(of: question) {
+                if currentQuestionIndex + 1 < strongSelf.questions.count {
+                    let nextQuestion = strongSelf.questions[currentQuestionIndex + 1]
+                    strongSelf.router.routeTo(question: nextQuestion,
+                                              answerCallback: strongSelf.routeNext(from: nextQuestion))
+                }
+            }
         }
     }
 }
